@@ -9,7 +9,7 @@ const darkBackground = `hsl(${hue}, 80%, 5%)`;
 const lightBackground = `hsl(${hue}, 78%, 96%)`;
 
 const fontHeight = 60;
-const fontPath = '../Hexagramms.json';
+const fontPath = './Hexagramms.json';
 const opacity = 0.8;
 
 const container = document.body;
