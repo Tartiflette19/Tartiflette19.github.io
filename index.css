@@ -136,6 +136,7 @@ a {
 
 @media screen and (max-width: 900px) {
 	.overlay {
+		overflow-y: scroll;
 		padding: calc(32px + var(--top)) calc(16px + var(--right)) calc(32px + var(--bottom)) calc(16px + var(--left));
 	}
 
