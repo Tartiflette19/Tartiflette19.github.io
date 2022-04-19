@@ -15,6 +15,7 @@ const opacity = 0.8;
 const container = document.body;
 const cursor = document.querySelector('.cursor');
 const overlay = document.querySelector('.overlay');
+const darkMode = document.querySelector('.dark-mode');
 
 const touch = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
 
@@ -22,14 +23,15 @@ const pixelRatio = Math.min(window.devicePixelRatio, 2);
 let width = container.clientWidth,
 	height = container.clientHeight;
 
-/* --------- Dark and Light Mode --------- */
+// --------- Dark and Light Mode --------- //
 let dark = JSON.parse(sessionStorage.getItem('dark')) ?? window.matchMedia('(prefers-color-scheme: dark)').matches;
 let background = new THREE.Color(dark ? darkBackground : lightBackground);
 document.documentElement.style.setProperty('--background', dark ? darkBackground : lightBackground);
 document.documentElement.style.setProperty('--color', dark ? '#ffffff' : '#000000');
 document.documentElement.style.setProperty('--cursor', `url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='3' cy='3' r='3' fill='%23${dark ? 'ffffff' : '000000'}'/%3E%3C/svg%3E") 3 3, auto`);
+document.querySelector('[rel="icon"]').href = `./favicon-${dark ? 'dark' : 'light'}.png`;
 
-/* --------- Characters --------- */
+// --------- Characters --------- //
 let hexagramms = ['乾', '坤', '屯', '需', '師', '比', '火', '履', '泰', '否', '同', '人', '大', '有', '謙', '豫', '噬', '濟', '復', '無', '妄', '坎', '咸', '恆', '壯', '晉', '明', '夷', '家', '睽', '損', '益', '夬', '姤', '萃', '升', '困', '井', '革', '艮', '漸', '旅', '巽', '兌', '渙', '中', '孚', '未', '小'];
 
 let characters = [];
@@ -41,16 +43,16 @@ for (let col = 0; col < 7; col++) {
 	}
 }
 
-/* --------- Scene --------- */
+// --------- Scene --------- //
 const scene = new THREE.Scene();
 scene.background = background;
 
-/* --------- Camera --------- */
+// --------- Camera --------- //
 const camera = new THREE.PerspectiveCamera(12, width / height, 1, 2000);
 camera.position.set(860, -470, 700);
 camera.lookAt(740, -280, 520);
 
-/* --------- Background Mirror --------- */
+// --------- Background Mirror --------- //
 const mirror = new Reflector(new THREE.PlaneGeometry(1000, 1000), {
 	clipBias: 0.001,
 	textureWidth: width * pixelRatio,
@@ -60,12 +62,12 @@ const mirror = new Reflector(new THREE.PlaneGeometry(1000, 1000), {
 mirror.position.set(300, 200, 0);
 scene.add(mirror);
 
-/* --------- Character Group --------- */
+// --------- Character Group --------- //
 const group = new THREE.Group();
 group.position.z = -2 * fontHeight;
 scene.add(group);
 
-/* --------- Characters --------- */
+// --------- Characters --------- //
 const loader = new FontLoader();
 loader.load(fontPath, font => {
 	characters.forEach((col, x) =>
@@ -128,11 +130,11 @@ loader.load(fontPath, font => {
 	);
 });
 
-/* --------- Raycaster --------- */
+// --------- Raycaster --------- //
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 
-/* --------- Renderer --------- */
+// --------- Renderer --------- //
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(pixelRatio);
 renderer.setSize(width, height);
@@ -144,7 +146,7 @@ const render = () => {
 	raycaster.setFromCamera(pointer, camera);
 };
 
-/* --------- Window Resize --------- */
+// --------- Window Resize --------- //
 window.onresize = () => {
 	width = container.clientWidth;
 	height = container.clientHeight;
@@ -155,7 +157,7 @@ window.onresize = () => {
 	renderer.setSize(width, height);
 };
 
-/* --------- Mouse Events --------- */
+// --------- Mouse Events --------- //
 const updateCursorPosition = ({ clientX, clientY }) => {
 	pointer.x = 2 * (clientX / width) - 1;
 	pointer.y = -(Math.min(clientY + window.scrollY, 1.5 * height) / height) * 2 + 1;
@@ -256,17 +258,21 @@ const animate = () => {
 
 animate();
 
-/* --------- Dark and Light Mode Change --------- */
+// --------- Dark and Light Mode Change --------- //
 const colorMode = isDark => {
 	dark = isDark;
 
-  sessionStorage.setItem('dark', dark)
+	sessionStorage.setItem('dark', dark);
 
 	document.documentElement.style.setProperty('--background', dark ? darkBackground : lightBackground);
 	document.documentElement.style.setProperty('--color', dark ? '#ffffff' : '#000000');
 	document.documentElement.style.setProperty('--cursor', `url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='3' cy='3' r='3' fill='%23${dark ? 'ffffff' : '000000'}'/%3E%3C/svg%3E") 3 3, auto`);
 
 	background = new THREE.Color(dark ? darkBackground : lightBackground);
+
+	document.querySelector('[rel="icon"]').href = `./favicon-${dark ? 'dark' : 'light'}.png`;
+
+	darkMode.textContent = dark ? 'dark' : 'light';
 
 	TweenMax.to(scene.background, 0.2, {
 		r: background.r,
@@ -292,9 +298,7 @@ window.matchMedia('(prefers-color-scheme: dark)').onchange = ({ matches }) => {
 	colorMode(matches);
 };
 
-document.querySelector('.dark-mode').textContent = dark ? 'dark' : 'light';
-
-document.querySelector('.dark-mode').onclick = e => {
+darkMode.textContent = dark ? 'dark' : 'light';
+darkMode.onclick = () => {
 	colorMode(!dark);
-	e.target.textContent = dark ? 'dark' : 'light';
 };
