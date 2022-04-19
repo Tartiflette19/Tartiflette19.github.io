@@ -47,8 +47,7 @@ body {
   height: -webkit-fill-available;
   gap: 32px;
   box-sizing: border-box;
-  padding: calc(100px + var(--top)) calc(100px + var(--right))
-    calc(100px + var(--bottom)) calc(100px + var(--left));
+  padding: calc(100px + var(--top)) calc(100px + var(--right)) calc(100px + var(--bottom)) calc(100px + var(--left));
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -118,8 +117,7 @@ a svg {
 
 @media screen and (max-width: 900px) {
   .overlay {
-    padding: calc(32px + var(--top)) calc(16px + var(--right))
-      calc(32px + var(--bottom)) calc(16px + var(--left));
+    padding: calc(32px + var(--top)) calc(16px + var(--right)) calc(32px + var(--bottom)) calc(16px + var(--left));
   }
 
   h1 {
@@ -135,8 +133,6 @@ a svg {
 @media screen and (max-height: 620px) {
   .overlay {
     overflow-y: scroll;
-    padding: calc(32px + var(--top)) calc(16px + var(--right))
-      calc(32px + var(--bottom) * 4) calc(16px + var(--left));
   }
 
   h1 {
