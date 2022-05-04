@@ -1,8 +1,13 @@
-import * as THREE from 'three';
-import { FontLoader } from 'https://unpkg.com/three@0.139.2/examples/jsm/loaders/FontLoader.js';
-import { TextGeometry } from 'https://unpkg.com/three@0.139.2/examples/jsm/geometries/TextGeometry.js';
-import { Reflector } from 'https://unpkg.com/three@0.139.2/examples/jsm/objects/Reflector.js';
-import { TweenMax, Expo, Power1 } from 'https://unpkg.com/gsap@2.1.3/index.js';
+//import * as THREE from 'three';
+//import { FontLoader } from 'https://unpkg.com/three@0.139.2/examples/jsm/loaders/FontLoader.js';
+//import { TextGeometry } from 'https://unpkg.com/three@0.139.2/examples/jsm/geometries/TextGeometry.js';
+//import { Reflector } from 'https://unpkg.com/three@0.139.2/examples/jsm/objects/Reflector.js';
+//import { TweenMax, Expo, Power1 } from 'https://unpkg.com/gsap@2.1.3/index.js';
+
+import * as THREE from './scripts.js';
+const FontLoader = THREE.FontLoader;
+const Reflector = THREE.Reflector;
+const TextGeometry = THREE.TextGeometry;
 
 const hue = 360 * Math.random();
 const darkBackground = `hsl(${hue}, 80%, 5%)`;
@@ -160,7 +165,7 @@ window.onresize = () => {
 // --------- Mouse Events --------- //
 const updateCursorPosition = ({ clientX, clientY }) => {
 	pointer.x = 2 * (clientX / width) - 1;
-	pointer.y = -2 * (clientY / height) + 1;
+	pointer.y = -(Math.min(clientY + window.scrollY, 1.5 * height) / height) * 2 + 1;
 
 	let point = raycaster.intersectObject(mirror)[0].point;
 	group.children.forEach(mesh => {
