@@ -111,7 +111,8 @@ a {
 
 .text a {
 	display: block;
-	width: 50%;
+	width: fit-content;
+	margin-left: 48%;
 	text-align: right;
 }
 
@@ -150,6 +151,7 @@ a {
 
 	.text a {
 		width: 100%;
+		margin-left: 0;
 	}
 
 	.links {
@@ -172,5 +174,6 @@ a {
 
 	.text a {
 		width: 100%;
+		margin-left: 0;
 	}
 }
